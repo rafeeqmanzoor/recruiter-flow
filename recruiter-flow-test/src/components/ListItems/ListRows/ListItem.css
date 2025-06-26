@@ -4,7 +4,7 @@
   padding: 2rem;
 }
 
-.brandName {
+.brandName, .brandNameDelete {
   border: none;
   background: #fff;
   margin-bottom: 10px;
@@ -12,10 +12,16 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), 0 1.5px 4px rgba(0, 0, 0, 0.06);
   border-radius: 1rem;
   padding: 0 2rem;
-  transition: box-shadow 0.2s;
+  transition: 
+    rotate 1s;
+    box-shadow: 2s;
 }
 
-.rowBrand:hover {
+.brandNameDelete {
+  rotate: 180deg;
+}
+
+.brandName:hover {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 3px 8px rgba(0, 0, 0, 0.08);
 }
 

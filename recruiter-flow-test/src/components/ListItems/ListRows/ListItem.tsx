@@ -16,7 +16,11 @@ const ListItem: React.FC<Props> = (props: Props) => {
   }
   return (
     <div className="listItemRow">
-      <div className="brandName">
+      <div
+        className={
+          deletedIds?.includes(item.id) ? "brandNameDelete" : "brandName"
+        }
+      >
         <h3>{item.brand}</h3>
 
         <p className="description">{item.description}</p>
