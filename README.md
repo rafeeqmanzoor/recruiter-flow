@@ -8,6 +8,7 @@ nvm use # needed everytime
 ```
 ## Local development
 ```bash
+- `cd recruiter-flow-test`
 - `npm install`
 - `npm run build`
 - `npm start
