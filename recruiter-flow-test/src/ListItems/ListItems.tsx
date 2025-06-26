@@ -13,6 +13,7 @@ const Listitems: React.FC = () => {
   const [listItems, setListItems] = useState<ListItemType[]>([]);
   const [deletedIds, setDeletedIds] = useState<number[]>([]);
   const [isFetching, setIsFetching] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
 
   const getListitems = async () => {
     setIsFetching(true);
@@ -50,6 +51,7 @@ const Listitems: React.FC = () => {
   };
 
   const addItemToTheList = async (brand: string) => {
+    setIsAdding(true);
     try {
       const newItem = await AddItemToList(brand);
       if (newItem) {
@@ -59,6 +61,7 @@ const Listitems: React.FC = () => {
       console.error("Error adding item to the list:", error);
     } finally {
       console.log("Add operation completed");
+      setIsAdding(false);
     }
   };
 
@@ -70,7 +73,7 @@ const Listitems: React.FC = () => {
           addItemToTheList("This is a New Brand");
         }}
       >
-        Add New Item
+        {isAdding ? <ThreeDots wrapperClass="addLoadingSpinner" /> : "Add Item"}
       </button>
     );
   };
@@ -88,18 +91,16 @@ const Listitems: React.FC = () => {
         {
           <>
             {addButton()}
-            <div className="listItemContainer">
-              {listItems?.map((item) => {
-                return (
-                  <ListItem
-                    key={item.id}
-                    item={item}
-                    deletedIds={deletedIds}
-                    deleteListItem={deleteListItem}
-                  />
-                );
-              })}
-            </div>
+            {listItems?.map((item) => {
+              return (
+                <ListItem
+                  key={item.id}
+                  item={item}
+                  deletedIds={deletedIds}
+                  deleteListItem={deleteListItem}
+                />
+              );
+            })}
           </>
         }
       </div>
