@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Listitems from './ListItems';
+import Listitems from './components/ListItems';
 
 function App() {
   return (

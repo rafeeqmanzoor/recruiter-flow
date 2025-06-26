@@ -1,7 +1,7 @@
 import React from "react";
 import "./ListItem.css";
 import { ThreeDots } from "react-loader-spinner";
-import { ListItemType } from "../../types/types";
+import { ListItemType } from "../../../types/types";
 
 type Props = {
   item: ListItemType;

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { AddItemToList, deleteItemById, getListApis } from "../apis/ListApis";
+import { AddItemToList, deleteItemById, getListApis } from "../../apis/ListApis";
 import ListItem from "./ListRows";
 import "./ListItems.css";
 import { ThreeDots } from "react-loader-spinner";
-import { ListItemType } from "../types/types";
+import { ListItemType } from "../../types/types";
 
 const Listitems: React.FC = () => {
   const [listItems, setListItems] = useState<ListItemType[]>([]);
