@@ -1,24 +1,14 @@
+import { apiType, bodyType, ListItemType } from "../types/types";
 import { getHeaders, getPayload } from "./apiUtils";
-
-export type ListItemType = {
-  id: number;
-  title: string;
-  brand: string;
-};
-
-export type FetchResponse = {
-  code: number;
-  payload: unknown;
-};
 
 const baseUrl = "https://dummyjson.com";
 
 const callApi = async (
   path: string,
-  type: string,
+  type: apiType,
   body?: string
 ): Promise<unknown> => {
-  let response = await fetch(`${baseUrl}/${path}`, getHeaders(type, body));
+  let response = await fetch(`${baseUrl}/${path}`, getHeaders(apiType[type], body));
   let data;
   try {
     const result = await response.json();
@@ -40,17 +30,17 @@ const callApi = async (
 };
 
 export const getListApis = async (): Promise<ListItemType[]> => {
-  return callApi(`products`, "GET") as Promise<ListItemType[]>;
+  return callApi(`products`, apiType.GET) as Promise<ListItemType[]>;
 };
 
-export const AddItemToList = async (brand: string): Promise<ListItemType> => {
+export const AddItemToList = async (body: bodyType): Promise<ListItemType> => {
   return callApi(
     `products/add`,
-    "POST",
-    JSON.stringify({ brand })
+    apiType.POST,
+    JSON.stringify(body)
   ) as Promise<ListItemType>;
 };
 
 export const deleteItemById = async (id: number): Promise<ListItemType> => {
-  return callApi(`products/${id}`, "DELETE") as Promise<ListItemType>;
+  return callApi(`products/${id}`, apiType.DELETE) as Promise<ListItemType>;
 };

@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
-import {
-  AddItemToList,
-  deleteItemById,
-  getListApis,
-  ListItemType,
-} from "../apis/ListApis";
+import { AddItemToList, deleteItemById, getListApis } from "../apis/ListApis";
 import ListItem from "./ListRows";
 import "./ListItems.css";
 import { ThreeDots } from "react-loader-spinner";
+import { ListItemType } from "../types/types";
 
 const Listitems: React.FC = () => {
   const [listItems, setListItems] = useState<ListItemType[]>([]);
   const [deletedIds, setDeletedIds] = useState<number[]>([]);
   const [isFetching, setIsFetching] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
+
+  //mocked data for adding new item to the list
+  const brandName = "A New Brand";
+  const brandDescription =
+    "This is a brand used to create a new  react project for recruiter flow";
 
   const getListitems = async () => {
     setIsFetching(true);
@@ -50,10 +51,10 @@ const Listitems: React.FC = () => {
     }
   };
 
-  const addItemToTheList = async (brand: string) => {
+  const addItemToTheList = async (brand: string, description: string) => {
     setIsAdding(true);
     try {
-      const newItem = await AddItemToList(brand);
+      const newItem = await AddItemToList({ brand, description });
       if (newItem) {
         setListItems((prevItems) => [...(prevItems || []), newItem]);
       }
@@ -70,7 +71,7 @@ const Listitems: React.FC = () => {
       <button
         className="addButton"
         onClick={() => {
-          addItemToTheList("This is a New Brand");
+          addItemToTheList(brandName, brandDescription); // we can take these as input from user
         }}
       >
         {isAdding ? <ThreeDots wrapperClass="addLoadingSpinner" /> : "Add Item"}

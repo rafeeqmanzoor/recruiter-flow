@@ -1,7 +1,7 @@
 import React from "react";
 import "./ListItem.css";
-import { ListItemType } from "../../apis/ListApis";
 import { ThreeDots } from "react-loader-spinner";
+import { ListItemType } from "../../types/types";
 
 type Props = {
   item: ListItemType;
@@ -16,7 +16,12 @@ const ListItem: React.FC<Props> = (props: Props) => {
   }
   return (
     <div className="listItemRow">
-      <div className="brandName">{item.brand}</div>
+      <div className="brandName">
+        <h3>{item.brand}</h3>
+
+        <p className="description">{item.description}</p>
+      </div>
+
       <button
         onClick={() => {
           deleteListItem(item.id);
