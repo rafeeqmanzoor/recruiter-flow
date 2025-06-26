@@ -7,20 +7,23 @@ import {
 } from "../apis/ListApis";
 import ListItem from "./ListRows";
 import "./ListItems.css";
+import { ThreeDots } from "react-loader-spinner";
 
 const Listitems: React.FC = () => {
-  const [listItems, setListItems] = useState<ListItemType[] | undefined>([]);
-  const [deletedIds, setDeletedIds] = useState<number[] | undefined>([]);
+  const [listItems, setListItems] = useState<ListItemType[]>([]);
+  const [deletedIds, setDeletedIds] = useState<number[]>([]);
+  const [isFetching, setIsFetching] = useState(false);
 
   const getListitems = async () => {
+    setIsFetching(true);
     try {
       const responseItems = await getListApis();
-      console.log("here we go", responseItems);
       setListItems(responseItems);
     } catch (error) {
       console.error("Error fetching list items:", error);
     } finally {
       console.log("Fetch operation completed");
+      setIsFetching(false);
     }
   };
 
@@ -31,9 +34,11 @@ const Listitems: React.FC = () => {
   const deleteListItem = async (id: number) => {
     setDeletedIds((prevIds) => [...(prevIds || []), id]);
     try {
-      const DeletedId = await deleteItemById(id);
-      if (DeletedId) {
-        const updatedItems = listItems?.filter((item) => item.id !== DeletedId);
+      const response = await deleteItemById(id);
+      if (response) {
+        const updatedItems = listItems?.filter(
+          (item) => item.id !== response.id
+        );
         setListItems(updatedItems);
       }
     } catch (error) {
@@ -57,35 +62,48 @@ const Listitems: React.FC = () => {
     }
   };
 
+  const addButton = () => {
+    return (
+      <button
+        className="addButton"
+        onClick={() => {
+          addItemToTheList("This is a New Brand");
+        }}
+      >
+        Add New Item
+      </button>
+    );
+  };
+
+  if (isFetching) {
+    return <ThreeDots wrapperClass="loadingSpinner" />;
+  }
+  if (!isFetching && (!listItems || !listItems?.length)) {
+    return addButton();
+  }
+
   return (
-    <>
-      <div className="itemsListContainer">
-        {!listItems?.length ? (
-          <div>Loading...</div>
-        ) : (
+    <div className="wrapper">
+      <div className="buttonListContainer">
+        {
           <>
-            <button
-              className="addButton"
-              onClick={() => {
-                addItemToTheList("This is a New Brand");
-              }}
-            >
-              Add New Item
-            </button>
-            {listItems.map((item) => {
-              return (
-                <ListItem
-                  key={item.id}
-                  item={item}
-                  deletedIds={deletedIds}
-                  deleteListItem={deleteListItem}
-                />
-              );
-            })}
+            {addButton()}
+            <div className="listItemContainer">
+              {listItems?.map((item) => {
+                return (
+                  <ListItem
+                    key={item.id}
+                    item={item}
+                    deletedIds={deletedIds}
+                    deleteListItem={deleteListItem}
+                  />
+                );
+              })}
+            </div>
           </>
-        )}
+        }
       </div>
-    </>
+    </div>
   );
 };
 export default Listitems;

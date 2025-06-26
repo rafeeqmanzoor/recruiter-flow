@@ -15,15 +15,19 @@ const ListItem: React.FC<Props> = (props: Props) => {
     return <></>;
   }
   return (
-    <div className="rowContainer">
-      <div className="rowBrand">{item.brand}</div>
+    <div className="listItemRow">
+      <div className="brandName">{item.brand}</div>
       <button
         onClick={() => {
           deleteListItem(item.id);
         }}
         className="deleteButton"
       >
-        {deletedIds?.includes(item.id) ? <ThreeDots wrapperClass='spinner'/> : "Delete"}
+        {deletedIds?.includes(item.id) ? (
+          <ThreeDots wrapperClass="spinner" />
+        ) : (
+          "Delete"
+        )}
       </button>
     </div>
   );

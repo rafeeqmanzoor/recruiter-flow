@@ -1,3 +1,5 @@
+import { getHeaders, getPayload } from "./apiUtils";
+
 export type ListItemType = {
   id: number;
   title: string;
@@ -6,73 +8,49 @@ export type ListItemType = {
 
 export type FetchResponse = {
   code: number;
-  products: ListItemType[] | undefined;
+  payload: unknown;
 };
 
-export const getListApis = async (): Promise<ListItemType[] | undefined> => {
-  const resp = await fetch("https://dummyjson.com/products");
-  let data: FetchResponse;
+const baseUrl = "https://dummyjson.com";
+
+const callApi = async (
+  path: string,
+  type: string,
+  body?: string
+): Promise<unknown> => {
+  let response = await fetch(`${baseUrl}/${path}`, getHeaders(type, body));
+  let data;
   try {
-    const result = await resp.json();
+    const result = await response.json();
     data = {
-      code: resp.status,
-      products: result.products,
+      code: response.status,
+      payload: getPayload(result),
     };
   } catch {
     data = {
-      code: resp.status,
-      products: undefined,
+      code: response.status,
+      payload: undefined,
     };
   }
-
-  if (!resp.ok) {
-    throw new Error(`HTTP error! status: ${resp.status}`);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
   }
-  return data.products;
+
+  return data.payload;
 };
 
-export const AddItemToList = async (
-  brand: string
-): Promise<ListItemType | undefined> => {
-  const resp = await fetch("https://dummyjson.com/products/add", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ brand }),
-  });
-  let data: ListItemType | undefined;
-  try {
-    const result = await resp.json();
-    data = {
-      id: result.id,
-      title: "",
-      brand: result.brand,
-    };
-  } catch {
-    data = undefined;
-  }
-
-  if (!resp.ok) {
-    throw new Error(`HTTP error! status: ${resp.status}`);
-  }
-  return data;
+export const getListApis = async (): Promise<ListItemType[]> => {
+  return callApi(`products`, "GET") as Promise<ListItemType[]>;
 };
 
-export const deleteItemById = async (
-  id: number
-): Promise<number | undefined> => {
-  const resp = await fetch(`https://dummyjson.com/products/${id}`, {
-    method: "DELETE",
-  });
-  let DeletedId: number | undefined;
-  try {
-    const result = await resp.json();
-    DeletedId = result.id;
-  } catch {
-    DeletedId = undefined;
-  }
+export const AddItemToList = async (brand: string): Promise<ListItemType> => {
+  return callApi(
+    `products/add`,
+    "POST",
+    JSON.stringify({ brand })
+  ) as Promise<ListItemType>;
+};
 
-  if (!resp.ok) {
-    throw new Error(`HTTP error! status: ${resp.status}`);
-  }
-  return DeletedId;
+export const deleteItemById = async (id: number): Promise<ListItemType> => {
+  return callApi(`products/${id}`, "DELETE") as Promise<ListItemType>;
 };

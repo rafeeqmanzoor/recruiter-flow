@@ -1,12 +1,11 @@
-.rowContainer {
+.listItemRow {
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, #f0f4f8 0%, #d9e7fa 100%);
   padding: 2rem;
   height: 4rem;
 }
 
-.rowBrand {
+.brandName {
   display: flex;
   align-items: center;
   border: none;
@@ -43,10 +42,9 @@
 }
 
 .spinner {
-  height: 2.1rem;
-  width: 6.25rem;
+  display: block !important;
   svg {
     height: 15px;
-    width: 65px;
+    width: 28px;
   }
 }
