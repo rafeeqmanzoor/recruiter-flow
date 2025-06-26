@@ -20,6 +20,15 @@ see `package.json` script for more useful commands
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
+# output
+
+![output](./recruiter-flow-test/docs/output.png)
+
+
+# Flow diagram
+
+![flow](./recruiter-flow-test/docs/flowDiagram.png)
+
 # Project Folder Structure
 
 - **src**
