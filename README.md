@@ -2,9 +2,7 @@
 ## prereqs
 ```bash
 # need node version > 18
-# These pick up thhe right node version from .nvmrc
 nvm install # just needed once
-nvm use # needed everytime
 ```
 ## Local development
 ```bash
@@ -25,6 +23,7 @@ You will also see any lint errors in the console.
 
 ![output](./recruiter-flow-test/docs/output.png)
 
+https://github.com/user-attachments/assets/e23e88de-8413-4cdb-8931-4428b179a259
 
 # Flow diagram
 
